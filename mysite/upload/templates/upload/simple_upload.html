@@ -1,0 +1,126 @@
+
+
+<html>
+    <head>
+        <!--PaperCSS CDN-->
+        <link href="https://unpkg.com/papercss@1.4.1/dist/paper.min.css" rel="stylesheet">
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+        <title>
+            Contribute
+        </title>
+        <!--Fake captcha just to fool noobs-->
+        <script type="text/javascript">
+            function enableBtn() {
+                document.getElementById("button1").disabled = false;
+            }
+        </script>
+    </head>
+    <body>
+        {% block content %}
+        <div class="form-group container" style="padding: 2.5% 0 0 0;">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col sm-2">
+                    School:&nbsp
+                    <select name="School" class="shadow" required>
+                        <option value="" selected disabled hidden>Select</option>
+                        <option value="SES">SES</option>
+                        <option value="SBS">SBS</option>
+                        <option value="SIF">SIF</option>
+                        <option value="SMS">SMS</option>
+                        <option value="SEOCS">SEOCS</option>
+                        <option value="SHSSM">SHSSM</option>
+                        <option value="SMMME">SMMME</option>
+                    </select>
+                </div>
+                <div class="col sm-4">
+                    Subject Name:&nbsp
+                    <input type="text" name="SubName" value="" class="shadow" required >
+                </div>
+                <div class="col sm-4">
+                    Subject Code:&nbsp
+                    <input type="text" name="SubCode" value="" class="shadow" required>
+                </div>
+                <div class="col sm-2">
+                    Year:&nbsp
+                    <select name="Year" class="shadow">
+                        <option value="" selected disabled hidden>Select</option>
+                        <!-- <option value="Year">2019</option> -->
+                        <option value="2018">2018</option>
+                        <option value="2017">2017</option>
+                        <option value="2016">2016</option>
+                        <option value="2015">2015</option>
+                        <option value="2014">2014</option>
+                        <option value="2013">2013</option>
+                        <option value="2012">2012</option>
+                        <option value="2011">2011</option>
+                        <option value="2010">2010</option>
+                        <option value="2009">2009</option>
+                        <option value="2008">2008</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col sm-3">
+                    Document:&nbsp
+                    <select name="Paper" class="shadow">
+                        <option value="" selected disabled hidden>Select</option>
+                        <option value="Notes">Notes</option>
+                        <option value="Midsem">Midsem</option>
+                        <option value="Endsem">Endsem</option>
+                        <option value="Quiz">Quiz/Assignment</option>
+                    </select>
+                </div>
+                <div class="col sm-4">
+                    Your Name:&nbsp<input class="input-block shadow" type="text" name="Author" maxlength="20" required>
+                </div>
+                <div class="col sm-4">
+                    Select PDF:&nbsp<input type="file" name="myfile" class="shadow" required accept="application/pdf">
+                </div>
+            </div>
+            <center>
+                <div class="g-recaptcha" data-sitekey="6LfNFkUUAAAAACerSexn9J0b0ZZT7UumIb-OzvUe">
+                </div>
+            </center><br>
+                {% if size_not_in_limit %}
+                    <p style="color:red">Due to server constraints we can't upload file greater than 10Mb, please mail it to us at iitbbspapers@gmail.com</p>
+                {% endif %}
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            <button type="submit" class="shadow shadow-hover btn-block">
+            Upload
+            </button>
+
+
+        </form>
+
+        <center><p><a href="/">Return to home</a></p></center>
+
+        {% if uploaded_file_url %}
+
+        <div class="row flex-spaces child-borders">
+            <label class="paper-btn margin" for="modal-1">Thank You! {{Author}}</label>
+        </div>
+        <input class="modal-state" id="modal-1" type="checkbox" checked >
+        <div class="modal">
+            <label class="modal-bg" for="modal-1"></label>
+            <div class="modal-body">
+            <label class="btn-close" for="modal-1">X</label>
+                <h4 class="modal-title">Hi! {{Author}}</h4>
+                <h5 class="modal-subtitle">Thank You for your Contribution</h5>
+                <p class="modal-text">Your File is Uploaded <a href="{{ uploaded_file_url }}" target="_blank"> Here</a> :) &nbsp &nbsp</p>
+            </div>
+        </div>
+        {% endif %}
+
+        {% endblock %}
+        </div>
+    </body>
+</html>
+
